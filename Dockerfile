@@ -1,8 +1,8 @@
-# multi/nginx:1.8.0
+# multi/nginx:1.8.1
 
 FROM alpine:edge
 
-ENV NGINX_VERSION=1.8.0 NGINX_RTMP_VERSION=1.1.7
+ENV NGINX_VERSION=1.8.1 NGINX_RTMP_VERSION=1.1.7
 
 ADD nginx-${NGINX_VERSION}.patch /tmp/
 
@@ -10,13 +10,14 @@ RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/
     apk update && \
     apk upgrade && \
     apk add geoip pcre && \
-    apk add -t build-deps geoip-dev pcre-dev openssl openssl-dev linux-headers zlib-dev libstdc++ libgcc build-base && \
+    apk add -t build-deps geoip-dev pcre-dev openssl openssl-dev linux-headers zlib-dev libstdc++ libgcc build-base patch && \
     cd /tmp && \
     wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
     tar zxf v${NGINX_RTMP_VERSION}.tar.gz && \
     wget http://nginx.org//download/nginx-${NGINX_VERSION}.tar.gz && \
     tar zxf nginx-${NGINX_VERSION}.tar.gz && \
     cd nginx-${NGINX_VERSION} && \
+    patch -p1 </tmp/nginx-${NGINX_VERSION}.patch && \
     ./configure \
       --prefix=/usr/share/nginx \
       --sbin-path=/usr/sbin/nginx \

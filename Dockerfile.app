@@ -1,4 +1,4 @@
-FROM multi/nginx:1.8.0
+FROM multi/nginx
 
 COPY app.conf /etc/nginx/conf.d/app.conf
 
