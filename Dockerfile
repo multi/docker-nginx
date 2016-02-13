@@ -1,23 +1,20 @@
-# multi/nginx:1.8.1
+# multi/nginx:1.9.11
 
 FROM alpine:edge
 
-ENV NGINX_VERSION=1.8.1 NGINX_RTMP_VERSION=1.1.7
-
-ADD nginx-${NGINX_VERSION}.patch /tmp/
+ENV NGINX_VERSION=1.9.11 NGINX_RTMP_VERSION=1.1.7
 
 RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     apk update && \
     apk upgrade && \
-    apk add geoip pcre && \
-    apk add -t build-deps geoip-dev pcre-dev openssl openssl-dev linux-headers zlib-dev libstdc++ libgcc build-base patch && \
+    apk add geoip pcre libxslt && \
+    apk add -t build-deps geoip-dev pcre-dev libxslt-dev openssl openssl-dev linux-headers zlib-dev libstdc++ libgcc build-base patch && \
     cd /tmp && \
     wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
     tar zxf v${NGINX_RTMP_VERSION}.tar.gz && \
     wget http://nginx.org//download/nginx-${NGINX_VERSION}.tar.gz && \
     tar zxf nginx-${NGINX_VERSION}.tar.gz && \
     cd nginx-${NGINX_VERSION} && \
-    patch -p1 </tmp/nginx-${NGINX_VERSION}.patch && \
     ./configure \
       --prefix=/usr/share/nginx \
       --sbin-path=/usr/sbin/nginx \
@@ -36,23 +33,29 @@ RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/
       --with-ipv6 \
       --with-file-aio \
       --with-pcre-jit \
+      --with-mail \
+      --with-mail_ssl_module \
       --with-http_addition_module \
       --with-http_auth_request_module \
       --with-http_dav_module \
       --with-http_degradation_module \
       --with-http_flv_module \
       --with-http_geoip_module \
+      --with-http_xslt_module \
+      --with-http_image_filter_module \
       --with-http_gunzip_module \
       --with-http_gzip_static_module \
       --with-http_mp4_module \
       --with-http_realip_module \
       --with-http_secure_link_module \
-      --with-http_spdy_module \
+      --with-http_v2_module \
       --with-http_ssl_module \
+      --with-http_slice_module \
       --with-http_stub_status_module \
       --with-http_sub_module \
-      --with-mail \
-      --with-mail_ssl_module \
+      --with-threads \
+      --with-stream \
+      --with-stream_ssl_module \
       --add-module="/tmp/nginx-rtmp-module-${NGINX_RTMP_VERSION}" && \
     make -j$(grep -c '^processor' /proc/cpuinfo) && make INSTALLDIRS=vendor install && \
     install -d -m0755 /etc/nginx/conf.d && \
