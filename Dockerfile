@@ -7,8 +7,8 @@ ENV NGINX_VERSION=1.9.11 NGINX_RTMP_VERSION=1.1.7
 RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     apk update && \
     apk upgrade && \
-    apk add geoip pcre libxslt && \
-    apk add -t build-deps geoip-dev pcre-dev libxslt-dev openssl openssl-dev linux-headers zlib-dev libstdc++ libgcc build-base patch && \
+    apk add geoip pcre libxslt gd && \
+    apk add -t build-deps geoip-dev pcre-dev libxslt-dev gd-dev openssl openssl-dev linux-headers zlib-dev libstdc++ libgcc build-base patch && \
     cd /tmp && \
     wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
     tar zxf v${NGINX_RTMP_VERSION}.tar.gz && \
