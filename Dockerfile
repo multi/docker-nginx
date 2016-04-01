@@ -1,8 +1,8 @@
-# multi/nginx:1.9.12
+# multi/nginx:1.9.13
 
 FROM alpine:edge
 
-ENV NGINX_VERSION=1.9.12 NGINX_RTMP_VERSION=1.1.7
+ENV NGINX_VERSION=1.9.13 NGINX_RTMP_VERSION=1.1.7
 
 RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     apk update && \
