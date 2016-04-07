@@ -1,3 +1,3 @@
-### nginx 1.9.13 + nginx-rtmp-module 1.1.7
+### nginx 1.9.14 + nginx-rtmp-module 1.1.7
 
 per project - build new image using this one as base, with `Dockerfile.app` and `app.conf`
